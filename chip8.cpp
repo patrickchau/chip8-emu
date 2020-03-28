@@ -238,8 +238,10 @@ void chip8::emulateCycle() {
 	case 0xD000: // DXYN: draws a coordinate at (VX, VY) with width of 8 pixels, height of N pixels.
 		// note VF is set to 1 if any screen pixels are flipped from set to unset when sprite is drawn, 0 if not
 		// state of a pixel is set by XOR
-		x = reg[(opcode & 0x0F00) >> 8];
-		y = reg[(opcode & 0x00F0) >> 4];
+		unsigned short pos_x;
+		pos_x = reg[(opcode & 0x0F00) >> 8];
+		unsigned short pos_y;
+		pos_y = reg[(opcode & 0x00F0) >> 4];
 		unsigned short height;
 		height = opcode & 0x000F;
 		unsigned short sprite;
@@ -252,11 +254,11 @@ void chip8::emulateCycle() {
 			for (int x_off = 0; x_off < 8; x_off++) {
 				if ((sprite & (0x80 >> x_off)) != 0) {	// checking each bit in sprite and see if it is 1. if so, draw
 					// if the position we are drawing to is already drawn, collision flag set
-					if (gfx[ (x + x_off) + ((y + y_off)*64) ] == 1) {
+					if (gfx[ (pos_x + x_off) + ((pos_y + y_off)*64) ] == 1) {
 						reg[15] = 1;
 					}
 					// then we xor that position
-					gfx[x + x_off + ((y + y_off) * 64)] ^= 1;
+					gfx[pos_x + x_off + ((pos_y + y_off) * 64)] ^= 1;
 				}
 			}
 		}
