@@ -6,7 +6,7 @@ public:
 	chip8();
 	~chip8();
 	bool initialize();
-	bool loadGame();
+	bool loadGame(char* filename);
 	void emulateCycle();
 
 	bool drawFlag;

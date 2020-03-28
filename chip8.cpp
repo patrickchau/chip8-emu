@@ -384,9 +384,17 @@ void chip8::emulateCycle() {
 	}
 }
 
-bool chip8::loadGame() {
+bool chip8::loadGame(char* filename) {
 	char* buffer = NULL;
-	FILE* file = fopen("invaders.c8", "rb");
+	FILE* file;
+	if (filename == nullptr) {
+		// then provided file name doesn't exist so just exit.
+		printf("File name provided doesn't exist! Defaulting to Tetris.");
+		file = fopen("tetris.c8", "rb");
+	}
+	else {
+		file = fopen(filename, "rb");
+	}
 	long size;
 	size_t result;
 	if (file == NULL) {

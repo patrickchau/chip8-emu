@@ -103,6 +103,7 @@ void render()
 
 
 int main( int argc, char* argv[] ) {
+
 	// sets up GLUT
 	glutInit(&argc, argv);
 
@@ -110,10 +111,14 @@ int main( int argc, char* argv[] ) {
 	cpu.initialize();
 
 	// read in the file and store into memory
-	cpu.loadGame();
+	if (!cpu.loadGame(argv[1])) {
+		// if loading the rom fails, just return
+		return 1;
+	}
 	
 	// setup callbacks runs the main loop, and runs our CPU emulation every cycle
 	if (!setupCallbacks()) {
+		// if it fails, just return
 		return 1;
 	}
 	
